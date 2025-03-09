@@ -6,6 +6,8 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Last.Controllers
 {
@@ -83,5 +85,6 @@ namespace Last.Controllers
             // Перенаправляем на страницу с подтверждением или другую страницу
             return RedirectToAction("Index", "MainPage");
         }
+
     }
 }

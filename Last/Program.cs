@@ -37,9 +37,37 @@ app.UseRouting(); // Маршрутизация
 app.UseAuthentication(); // Включение аутентификации
 app.UseAuthorization(); // Включение авторизации
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<LastContext>();
+    if (!context.Vacins.Any())
+    {
+        var vacins = new List<Vacin>
+        {
+            new Vacin { Type = "Pfizer" },
+            new Vacin { Type = "Moderna" },
+            new Vacin { Type = "AstraZeneca" },
+            new Vacin { Type = "Johnson & Johnson" },
+            new Vacin { Type = "Sputnik V" },
+            new Vacin { Type = "Sinopharm" },
+            new Vacin { Type = "Sinovac" },
+            new Vacin { Type = "Novavax" },
+            new Vacin { Type = "Covaxin" },
+            new Vacin { Type = "Covishield" },
+            new Vacin { Type = "CanSino" },
+            new Vacin { Type = "EpiVacCorona" },
+            new Vacin { Type = "ZyCoV-D" },
+            new Vacin { Type = "Abdala" },
+            new Vacin { Type = "Soberana" }
+        };
+
+        context.Vacins.AddRange(vacins);
+        context.SaveChanges();
+    }
+}
+
 // Настройка маршрутов по умолчанию
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.Run(); // Запуск приложения

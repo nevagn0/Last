@@ -136,3 +136,4 @@ D:\LastTry\Last\Last\obj\Debug\net8.0\Last.pdb
 D:\LastTry\Last\Last\obj\Debug\net8.0\Last.genruntimeconfig.cache
 D:\LastTry\Last\Last\obj\Debug\net8.0\ref\Last.dll
 D:\LastTry\Last\Last\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\LastTry\Last\Last\obj\Debug\net8.0\Last.sourcelink.json
