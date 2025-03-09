@@ -1,0 +1,34 @@
+﻿@model List<Animal>
+
+@{
+    ViewData["Title"] = "Добавить паспорт";
+}
+
+<h2>Добавить паспорт</h2>
+
+@if (Model.Any())
+{
+    <form asp-action="Index" method="post">
+        <div class="form-group">
+            <label for="animalId">Выберите животное:</label>
+            <select class="form-control" id="animalId" name="animalId">
+                @foreach (var animal in Model)
+                {
+                    <option value="@animal.Id">@animal.Name (Возраст: @animal.Age, Тип: @animal.Type)</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="seria">Серия паспорта:</label>
+            <input type="text" class="form-control" id="seria" name="seria" required />
+        </div>
+
+        <div class="form-group">
+            <label for="number">Номер паспорта:</label>
+            <input type="text" class="form-control" id="number" name="number" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Создать паспорт</button>
+    </form>
+}
