@@ -1,0 +1,71 @@
+﻿@model Last.Models.Vetcin
+
+@{
+    ViewData["Title"] = "Комментарии о ветклинике";
+}
+
+<h2>Комментарии о ветклинике</h2>
+
+<div class="form-group">
+    <label for="vetclinicSelect">Выберите ветклинику:</label>
+    <select class="form-control" id="vetclinicSelect" onchange="location = this.value;">
+        <option value="">-- Выберите ветклинику --</option>
+        @foreach (var clinic in ViewBag.VetClinics)
+        {
+            <option value="@Url.Action("ViewComments", new { vetclinId = clinic.Id })">
+                @clinic.Adress (@clinic.Phone)
+            </option>
+        }
+    </select>
+</div>
+
+@if (Model != null)
+{
+    <div>
+        <h4>@Model.Adress</h4>
+        <p>Телефон: @Model.Phone</p>
+    </div>
+
+    <h3>Комментарии:</h3>
+
+    @if (Model.Records != null && Model.Records.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Комментарий</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var record in Model.Records)
+                {
+                    <tr>
+                        <td>@record.Com</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Нет комментариев.</p>
+    }
+
+    <!-- Форма для добавления комментария -->
+    <form asp-action="AddComment" method="post">
+        <input type="hidden" name="vetclinId" value="@Model.Id" />
+        <div class="form-group">
+            <label for="comment">Оставить комментарий:</label>
+            <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+}
+else
+{
+    <p>Выберите ветклинику, чтобы увидеть комментарии.</p>
+}
+
+<div>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">На главную</a>
+</div>
