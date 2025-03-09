@@ -31,8 +31,8 @@ namespace Last.Controllers
                 {
                     var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, existingUser.Id.ToString()), // Используем existingUser.Id
-                new Claim(ClaimTypes.Name, existingUser.Firstname) // Используем existingUser.Firstname
+                new Claim(ClaimTypes.NameIdentifier, existingUser.Id.ToString()), 
+                new Claim(ClaimTypes.Name, existingUser.Firstname)
             };
 
                     var identity = new ClaimsIdentity(claims, "CookieAuth");

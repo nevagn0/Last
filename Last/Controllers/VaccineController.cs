@@ -67,7 +67,6 @@ namespace Last.Controllers
                 return RedirectToAction("Index", "MainPage"); 
             }
 
-            // Если модель невалидна, снова передаем списки вакцин и паспортов
             ViewBag.Vacins = _context.Vacins.Select(v => new SelectListItem
             {
                 Value = v.Id.ToString(),

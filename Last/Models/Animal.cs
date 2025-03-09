@@ -18,4 +18,5 @@ public partial class Animal
     public virtual Passport? Passport { get; set; }
 
     public virtual User? User { get; set; }
+
 }

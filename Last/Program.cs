@@ -4,10 +4,8 @@ using Last.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавление сервисов в контейнер
 builder.Services.AddControllersWithViews();
 
-// Регистрация LastContext как сервиса с использованием SQL Server
 builder.Services.AddDbContext<LastContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -15,9 +13,9 @@ builder.Services.AddDbContext<LastContext>(options =>
 builder.Services.AddAuthentication("CookieAuth")
     .AddCookie("CookieAuth", options =>
     {
-        options.Cookie.Name = "YourAppCookie"; // Имя cookie
-        options.LoginPath = "/Authorization/Index"; // Путь к странице входа
-        options.AccessDeniedPath = "/Home/AccessDenied"; // Путь к странице отказа в доступе
+        options.Cookie.Name = "YourAppCookie"; 
+        options.LoginPath = "/Authorization/Index"; 
+        options.AccessDeniedPath = "/Home/AccessDenied"; 
     });
 
 var app = builder.Build();
@@ -25,17 +23,17 @@ var app = builder.Build();
 // Настройка конвейера HTTP-запросов
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error"); // Обработка ошибок в production
-    app.UseHsts(); // Включение HSTS (HTTP Strict Transport Security)
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts(); 
 }
 
-app.UseHttpsRedirection(); // Перенаправление HTTP на HTTPS
-app.UseStaticFiles(); // Поддержка статических файлов
+app.UseHttpsRedirection(); 
+app.UseStaticFiles(); 
 
-app.UseRouting(); // Маршрутизация
+app.UseRouting(); 
 
-app.UseAuthentication(); // Включение аутентификации
-app.UseAuthorization(); // Включение авторизации
+app.UseAuthentication(); 
+app.UseAuthorization(); 
 
 using (var scope = app.Services.CreateScope())
 {
@@ -60,14 +58,28 @@ using (var scope = app.Services.CreateScope())
             new Vacin { Type = "Abdala" },
             new Vacin { Type = "Soberana" }
         };
-
-        context.Vacins.AddRange(vacins);
-        context.SaveChanges();
+        context.Vacins.AddRange(vacins);    
     }
+    if (context.Vacins.Any())
+    {
+        var vetClinics = new List<Vetcin>
+    {
+        new Vetcin { Adress = "ул. Ленина, 10", Phone = "+7 (123) 456-7890" },
+        new Vetcin { Adress = "ул. Пушкина, 25", Phone = "+7 (234) 567-8901" },
+        new Vetcin { Adress = "ул. Гагарина, 5", Phone = "+7 (345) 678-9012" },
+        new Vetcin { Adress = "ул. Советская, 15", Phone = "+7 (456) 789-0123" },
+        new Vetcin { Adress = "ул. Мира, 30", Phone = "+7 (567) 890-1234" },
+        new Vetcin { Adress = "ул. Садовая, 12", Phone = "+7 (678) 901-2345" },
+        new Vetcin { Adress = "ул. Лесная, 8", Phone = "+7 (789) 012-3456" },
+        new Vetcin { Adress = "ул. Центральная, 1", Phone = "+7 (890) 123-4567" }
+    };
+
+        context.Vetcins.AddRange(vetClinics);
+    }
+    context.SaveChanges();
 }
 
-// Настройка маршрутов по умолчанию
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.Run(); // Запуск приложения
+app.Run(); 

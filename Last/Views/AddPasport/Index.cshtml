@@ -1,4 +1,4 @@
-﻿@model List<Animal>
+﻿@model List<AnimalViewModel>
 
 @{
     ViewData["Title"] = "Добавить паспорт";
@@ -28,8 +28,59 @@
             <label for="number">Номер паспорта:</label>
             <input type="text" class="form-control" id="number" name="number" required />
         </div>
-        
+
         <button type="submit" class="btn btn-primary">Создать паспорт</button>
-        
     </form>
+
+    <h3>Список животных с паспортами и вакцинами:</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Возраст</th>
+                <th>Тип</th>
+                <th>Паспорт</th>
+                <th>Вакцины</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var animal in Model)
+            {
+                <tr>
+                    <td>@animal.Name</td>
+                    <td>@animal.Age</td>
+                    <td>@animal.Type</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(animal.PassportSeria) && !string.IsNullOrEmpty(animal.PassportNumber))
+                        {
+                            <span>Серия: @animal.PassportSeria, Номер: @animal.PassportNumber</span>
+                        }
+                        else
+                        {
+                            <span>Паспорт отсутствует</span>
+                        }
+                    </td>
+                    <td>
+                        @if (animal.Vaccines != null && animal.Vaccines.Any())
+                        {
+                            <ul>
+                                @foreach (var vaccine in animal.Vaccines)
+                                {
+                                    <li>@vaccine</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>Вакцины отсутствуют</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Нет доступных животных.</p>
 }

@@ -1,4 +1,4 @@
-﻿// Controllers/RegistrationController.cs
+﻿
 using Last.Models;
 using System;
 using Microsoft.AspNetCore.Mvc;

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Last.Controllers
 {
-    [Authorize] // Только авторизованные пользователи могут добавлять паспорта
+    [Authorize] 
     public class AddPasportController : Controller
     {
         private readonly LastContext _poContext;
@@ -21,40 +21,43 @@ namespace Last.Controllers
             _poContext = poContext;
         }
 
-        // GET: AddPasport/Index
         public async Task<IActionResult> Index()
         {
-            // Получаем ID текущего пользователя из аутентификации
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction("Index", "Authorization"); // Перенаправляем на страницу авторизации, если пользователь не авторизован
+                return RedirectToAction("Index", "Authorization");
             }
 
-            // Получаем список животных, принадлежащих текущему пользователю
-            var userAnimals = _poContext.Animals
+            var userAnimals = await _poContext.Animals
                 .Where(a => a.Userid == int.Parse(userId))
-                .ToList();
+                .Select(a => new AnimalViewModel
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Age = a.Age,
+                    Type = a.Type,
+                    PassportSeria = a.Passport.Seria,
+                    PassportNumber = a.Passport.Number,
+                    Vaccines = a.Passport.Vacins.Select(v => v.Type).ToList()
+                })
+                .ToListAsync();
 
-            // Передаем список животных в представление
             return View(userAnimals);
         }
 
-        // POST: AddPasport/Index
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(int animalId, string seria, string number)
         {
-            // Получаем ID текущего пользователя из аутентификации
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction("Index", "Authorization"); // Перенаправляем на страницу авторизации, если пользователь не авторизован
+                return RedirectToAction("Index", "Authorization"); 
             }
 
-            // Находим выбранное животное
             var animal = _poContext.Animals
                 .FirstOrDefault(a => a.Id == animalId && a.Userid == int.Parse(userId));
 
@@ -64,7 +67,6 @@ namespace Last.Controllers
                 return View(_poContext.Animals.Where(a => a.Userid == int.Parse(userId)).ToList());
             }
 
-            // Проверяем, есть ли уже паспорт у этого животного
             if (animal.Passport != null)
             {
                 ModelState.AddModelError(string.Empty, "У этого животного уже есть паспорт.");
@@ -82,7 +84,6 @@ namespace Last.Controllers
             _poContext.Passports.Add(pasport);
             await _poContext.SaveChangesAsync();
 
-            // Перенаправляем на страницу с подтверждением или другую страницу
             return RedirectToAction("Index", "MainPage");
         }
 

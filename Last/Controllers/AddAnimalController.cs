@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Last.Controllers
 {
-    [Authorize] // Только авторизованные пользователи могут добавлять животных
+    [Authorize]
     public class AddAnimalController : Controller
     {
         private readonly LastContext _poContext;
@@ -28,7 +28,6 @@ namespace Last.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Получаем ID текущего пользователя из аутентификации
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 if (string.IsNullOrEmpty(userId))
@@ -37,18 +36,14 @@ namespace Last.Controllers
                     return View(animal);
                 }
 
-                // Привязываем животное к текущему пользователю
                 animal.Userid = int.Parse(userId);
 
-                // Добавляем животное в базу данных
                 _poContext.Animals.Add(animal);
                 _poContext.SaveChanges();
 
-                // Перенаправляем на главную страницу или другую страницу
                 return RedirectToAction("Index", "MainPage");
             }
 
-            // Если что-то пошло не так, возвращаем пользователя на страницу с ошибками
             return View(animal);
         }
     }

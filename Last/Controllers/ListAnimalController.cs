@@ -20,7 +20,7 @@ namespace Last.Controllers
                 .Where(a => a.Userid == int.Parse(userId))
                 .ToList();
 
-            // Передаем список животных в представление
+
             return View(userAnimals);
         }
     }
