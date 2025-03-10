@@ -9,9 +9,11 @@ public partial class User
     public int Id { get; set; }
 
     [Required(ErrorMessage = "Введите имя")]
+    [MaxLength(50, ErrorMessage = "Имя не должно превышать 50 символов")]
     public string? Firstname { get; set; }
 
     [Required(ErrorMessage = "Введите фамилию")]
+    [MaxLength(50, ErrorMessage = "Фамилия не должна превышать 50 символов")]
     public string? Secondname { get; set; }
 
     [Required(ErrorMessage = "Введите пароль")]

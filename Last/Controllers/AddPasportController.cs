@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace Last.Controllers
 {
@@ -55,7 +56,7 @@ namespace Last.Controllers
 
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction("Index", "Authorization"); 
+                return RedirectToAction("Index", "Authorization");
             }
 
             var animal = _poContext.Animals
@@ -64,27 +65,51 @@ namespace Last.Controllers
             if (animal == null)
             {
                 ModelState.AddModelError(string.Empty, "Животное не найдено.");
-                return View(_poContext.Animals.Where(a => a.Userid == int.Parse(userId)).ToList());
+                return View(await GetUserAnimals(int.Parse(userId)));
             }
 
             if (animal.Passport != null)
             {
                 ModelState.AddModelError(string.Empty, "У этого животного уже есть паспорт.");
-                return View(_poContext.Animals.Where(a => a.Userid == int.Parse(userId)).ToList());
+                return View(await GetUserAnimals(int.Parse(userId))); 
             }
 
-
-            var pasport = new Passport
+            try
             {
-                Id = animalId,
-                Seria = seria,
-                Number = number,
-            };
+                var passport = new Passport
+                {
+                    Id = animalId,
+                    Seria = seria,
+                    Number = number,
+                };
 
-            _poContext.Passports.Add(pasport);
-            await _poContext.SaveChangesAsync();
+                _poContext.Passports.Add(passport);
+                await _poContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка при создании паспорта: " + ex.Message);
+                return View(await GetUserAnimals(int.Parse(userId)));
+            }
 
             return RedirectToAction("Index", "MainPage");
+        }
+
+        private async Task<List<AnimalViewModel>> GetUserAnimals(int userId)
+        {
+            return await _poContext.Animals
+                .Where(a => a.Userid == userId)
+                .Select(a => new AnimalViewModel
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Age = a.Age,
+                    Type = a.Type,
+                    PassportSeria = a.Passport.Seria,
+                    PassportNumber = a.Passport.Number,
+                    Vaccines = a.Passport.Vacins.Select(v => v.Type).ToList()
+                })
+                .ToListAsync();
         }
 
     }

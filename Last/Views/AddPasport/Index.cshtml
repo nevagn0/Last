@@ -6,6 +6,19 @@
 
 <h2>Добавить паспорт</h2>
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+
 @if (Model.Any())
 {
     <form asp-action="Index" method="post">
