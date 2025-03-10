@@ -17,7 +17,6 @@ namespace Last.Controllers
             _context = context;
         }
 
-        // Действие для отображения формы создания записи
         public IActionResult Create()
         {
             ViewBag.VetClinics = _context.Vetcins.Select(v => new SelectListItem
@@ -29,7 +28,6 @@ namespace Last.Controllers
             return View();
         }
 
-        // Действие для обработки создания записи
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Record record)
@@ -51,7 +49,7 @@ namespace Last.Controllers
                 return RedirectToAction("Index", "MainPage");
             }
 
-            // Если модель невалидна, снова передаем список ветклиник
+
             ViewBag.VetClinics = _context.Vetcins.Select(v => new SelectListItem
             {
                 Value = v.Id.ToString(),
@@ -60,20 +58,16 @@ namespace Last.Controllers
 
             return View(record);
         }
-
-        // Действие для отображения комментариев о ветклинике
         public async Task<IActionResult> ViewComments(int? vetclinId)
         {
-            // Получаем список всех ветклиник
             var vetClinics = await _context.Vetcins.ToListAsync();
 
-            // Если выбрана ветклиника, загружаем её комментарии
             Vetcin selectedVetclinic = null;
             if (vetclinId.HasValue)
             {
                 selectedVetclinic = await _context.Vetcins
                     .Include(v => v.Records)
-                    .ThenInclude(r => r.User) // Подгружаем пользователя, если нужно
+                    .ThenInclude(r => r.User) 
                     .FirstOrDefaultAsync(v => v.Id == vetclinId.Value);
             }
 
@@ -86,9 +80,9 @@ namespace Last.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddComment(int vetclinId, string comment)
         {
-            if (string.IsNullOrEmpty(comment))
+            if (string.IsNullOrEmpty(comment) || comment.Length > 500)
             {
-                ModelState.AddModelError(string.Empty, "Комментарий не может быть пустым.");
+                ModelState.AddModelError(string.Empty, "Комментарий не может быть пустым или превышать 500 символов.");
                 return RedirectToAction("ViewComments", new { vetclinId });
             }
 
@@ -96,8 +90,9 @@ namespace Last.Controllers
 
             if (string.IsNullOrEmpty(userId))
             {
-                return RedirectToAction("Index", "MainPage"); 
+                return RedirectToAction("Index", "Authorization"); 
             }
+
 
             var record = new Record
             {
@@ -105,6 +100,7 @@ namespace Last.Controllers
                 Vetclinid = vetclinId,
                 Userid = int.Parse(userId)
             };
+
 
             _context.Records.Add(record);
             await _context.SaveChangesAsync();

@@ -1,0 +1,41 @@
+﻿@model List<Last.Models.Record>
+
+@{
+    ViewData["Title"] = "Мои записи";
+}
+
+<h2>Мои записи</h2>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ветклиника</th>
+                <th>Комментарий</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in Model)
+            {
+                <tr>
+                    <td>@record.Vetclin?.Adress</td>
+                    <td>@record.Com</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@record.Id" class="btn btn-info">Подробнее</a>
+                        <a asp-action="Delete" asp-route-id="@record.Id" class="btn btn-danger">Удалить</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>У вас пока нет записей.</p>
+}
+
+<div>
+    <button onclick="window.history.back()" class="btn btn-secondary">Назад</button>
+</div>

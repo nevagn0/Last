@@ -51,12 +51,12 @@
         <p>Нет комментариев.</p>
     }
 
-    <!-- Форма для добавления комментария -->
     <form asp-action="AddComment" method="post">
         <input type="hidden" name="vetclinId" value="@Model.Id" />
         <div class="form-group">
             <label for="comment">Оставить комментарий:</label>
             <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+            <small class="form-text text-muted">Максимум 500 символов.</small>
         </div>
         <button type="submit" class="btn btn-primary">Отправить</button>
     </form>
@@ -67,5 +67,12 @@ else
 }
 
 <div>
-    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">На главную</a>
+    <button onclick="window.history.back()" class="btn btn-secondary">Назад</button>
 </div>
+<script>
+    document.getElementById('comment').addEventListener('input', function () {
+        var maxLength = 500;
+        var remaining = maxLength - this.value.length;
+        document.getElementById('charCount').textContent = remaining;
+    });
+</script>

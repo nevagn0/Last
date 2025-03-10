@@ -1,0 +1,17 @@
+﻿@model Last.Models.Record
+
+@{
+    ViewData["Title"] = "Детали записи";
+}
+
+<h2>Детали записи</h2>
+
+<div>
+    <h4>Ветклиника: @Model.Vetclin?.Adress</h4>
+    <p>Телефон: @Model.Vetclin?.Phone</p>
+    <p>Комментарий: @Model.Com</p>  
+</div>
+
+<div>
+    <button onclick="window.history.back()" class="btn btn-secondary">Назад</button>
+</div>

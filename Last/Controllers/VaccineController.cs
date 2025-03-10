@@ -19,20 +19,37 @@ namespace Last.Controllers
 
         public IActionResult AddVaccineToPassport()
         {
+            var userId = GetCurrentUserId();
+            var userAnimals = _context.Animals
+                .Where(a => a.Userid == userId)  
+                .Select(a => a.Id)             
+                .ToList();
+
+            ViewBag.Passports = _context.Passports
+                .Where(p => userAnimals.Contains(p.IdNavigation.Id))
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = $"Паспорт: {p.Seria} {p.Number}"
+                })
+                .ToList();
+
             ViewBag.Vacins = _context.Vacins.Select(v => new SelectListItem
             {
                 Value = v.Id.ToString(),
                 Text = v.Type
             }).ToList();
 
-            ViewBag.Passports = _context.Passports.Select(p => new SelectListItem
-            {
-                Value = p.Id.ToString(),
-                Text = $"Паспорт: {p.Seria} {p.Number}"
-            }).ToList();
-
             return View();
         }
+
+        private int GetCurrentUserId()
+        {
+            var userName = User.Identity.Name;
+            var user = _context.Users.FirstOrDefault(u => u.Firstname == userName);
+            return user?.Id ?? 0;  
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
