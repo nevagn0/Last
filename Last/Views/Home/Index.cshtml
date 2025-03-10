@@ -1,11 +1,23 @@
-﻿﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    ViewData["Title"] = "Главная страница";
 }
 
-<div class="text-center">
-    <a asp-controller="Registration" asp-action="Index"><button>Регистрация</button></a>
-</div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Добро пожаловать в нашу ветклинику!</h1>
+        <div class="text-center">
+            <a asp-controller="Registration" asp-action="Index" class="btn">Регистрация</a>
+            <a asp-controller="Authorization" asp-action="Index" class="btn">Авторизация</a>
+        </div>
+    </div>
 
-<div class="text-center">
-    <a asp-controller="Authorization" asp-action="Index"><button>Авторизация</button></a>
-</div>
+</body>
+</html>

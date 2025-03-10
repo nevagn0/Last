@@ -1,22 +1,198 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #388E3C; 
+    --background-color: #F1F8E9; 
+    --text-color: #2E7D32; 
+    --button-hover-color: #66BB6A; 
+    --button-active-color: #2E7D32; 
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
 }
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+    .btn:hover {
+        background-color: var(--button-hover-color);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:active {
+        background-color: var(--button-active-color);
+        transform: translateY(0);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+h1, h2, h3 {
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+.navbar {
+    background-color: var(--primary-color);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+        font-size: 18px;
+    }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+}
+
+    .card h3 {
+        margin-top: 0;
+    }
+
+
+.footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .form-control:focus {
+        border-color: var(--button-hover-color);
+        box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+        outline: none;
+    }
+
+.control-label {
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+    display: block;
+}
+
+.text-danger {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.btn-back {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-back:hover {
+        background-color: #5a6268;
+    }
+
+.btn-pulse {
+    animation: pulse 2s infinite;
+}
+
+
+.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+    .btn-icon i {
+        font-size: 20px;
+    }
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+    .table th, .table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--primary-color);
+    }
+
+    .table th {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .table tr:hover {
+        background-color: var(--background-color);
+    }
+
+    .table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }

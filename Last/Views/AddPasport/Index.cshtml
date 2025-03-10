@@ -18,85 +18,91 @@
     </div>
 }
 
-
 @if (Model.Any())
 {
-    <form asp-action="Index" method="post">
-        <div class="form-group">
-            <label for="animalId">Выберите животное:</label>
-            <select class="form-control" id="animalId" name="animalId">
-                @foreach (var animal in Model)
-                {
-                    <option value="@animal.Id">@animal.Name (Возраст: @animal.Age, Тип: @animal.Type)</option>
-                }
-            </select>
-        </div>
+    <div class="form-container">
+        <form asp-action="Index" method="post">
+            <div class="form-group">
+                <label for="animalId" class="control-label">Выберите животное:</label>
+                <select class="form-control" id="animalId" name="animalId">
+                    @foreach (var animal in Model)
+                    {
+                        <option value="@animal.Id">@animal.Name (Возраст: @animal.Age, Тип: @animal.Type)</option>
+                    }
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label for="seria">Серия паспорта:</label>
-            <input type="text" class="form-control" id="seria" name="seria" required />
-        </div>
+            <div class="form-group">
+                <label for="seria" class="control-label">Серия паспорта:</label>
+                <input type="text" class="form-control" id="seria" name="seria" required />
+            </div>
 
-        <div class="form-group">
-            <label for="number">Номер паспорта:</label>
-            <input type="text" class="form-control" id="number" name="number" required />
-        </div>
+            <div class="form-group">
+                <label for="number" class="control-label">Номер паспорта:</label>
+                <input type="text" class="form-control" id="number" name="number" required />
+            </div>
 
-        <button type="submit" class="btn btn-primary">Создать паспорт</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Создать паспорт</button>
+        </form>
+    </div>
 
     <h3>Список животных с паспортами и вакцинами:</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Имя</th>
-                <th>Возраст</th>
-                <th>Тип</th>
-                <th>Паспорт</th>
-                <th>Вакцины</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var animal in Model)
-            {
+    <div class="card">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@animal.Name</td>
-                    <td>@animal.Age</td>
-                    <td>@animal.Type</td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(animal.PassportSeria) && !string.IsNullOrEmpty(animal.PassportNumber))
-                        {
-                            <span>Серия: @animal.PassportSeria, Номер: @animal.PassportNumber</span>
-                        }
-                        else
-                        {
-                            <span>Паспорт отсутствует</span>
-                        }
-                    </td>
-                    <td>
-                        @if (animal.Vaccines != null && animal.Vaccines.Any())
-                        {
-                            <ul>
-                                @foreach (var vaccine in animal.Vaccines)
-                                {
-                                    <li>@vaccine</li>
-                                }
-                            </ul>
-                        }
-                        else
-                        {
-                            <span>Вакцины отсутствуют</span>
-                        }
-                    </td>
+                    <th>Имя</th>
+                    <th>Возраст</th>
+                    <th>Тип</th>
+                    <th>Паспорт</th>
+                    <th>Вакцины</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var animal in Model)
+                {
+                    <tr>
+                        <td>@animal.Name</td>
+                        <td>@animal.Age</td>
+                        <td>@animal.Type</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(animal.PassportSeria) && !string.IsNullOrEmpty(animal.PassportNumber))
+                            {
+                                <span>Серия: @animal.PassportSeria, Номер: @animal.PassportNumber</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Паспорт отсутствует</span>
+                            }
+                        </td>
+                        <td>
+                            @if (animal.Vaccines != null && animal.Vaccines.Any())
+                            {
+                                <ul>
+                                    @foreach (var vaccine in animal.Vaccines)
+                                    {
+                                        <li>@vaccine</li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Вакцины отсутствуют</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 else
 {
-    <p>Нет доступных животных.</p>
+    <div class="card">
+        <p>Нет доступных животных.</p>
+    </div>
 }
+
 <div>
     <button onclick="window.history.back()" class="btn btn-secondary">Назад</button>
 </div>
